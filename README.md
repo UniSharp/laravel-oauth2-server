@@ -1,1 +1,1 @@
-# laravel-oauth-server
+# laravel-oauth2-server

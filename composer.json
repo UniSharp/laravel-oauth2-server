@@ -1,0 +1,23 @@
+{
+    "name": "unisharp/laravel-oauth2-server",
+    "description": "A standard laravel 5.1 package for creating an oauth2 server instantly",
+    "keywords": ["oauth", "server", "oauth2", "laravel"],
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+    {
+      "name":  "UniSharp Ltd. (Composer Package Maintainer)",
+      "homepage": "http://www.unisharp.com"
+    }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "illuminate/support": "~5.0|~5.1",
+        "lucadegasperi/oauth2-server-laravel": "^5.1"
+    },
+    "autoload": {
+        "psr-4": {
+        "Unisharp\\Oauth2\\": "src/"
+        }
+    }
+}
