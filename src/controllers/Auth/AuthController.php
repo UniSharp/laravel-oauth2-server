@@ -61,6 +61,13 @@ class AuthController extends Controller
         return true;
     }
 
+    public function index(Request $request)
+    {
+        $params = $request->input();
+
+        return view('oauth2::login.index', compact('params'));
+    }
+
     /**
     * Handle an authentication attempt.
     *
@@ -77,7 +84,9 @@ class AuthController extends Controller
             config('oauth2.auth_fields')['username'] => $request->input('username'),
             config('oauth2.auth_fields')['password'] => $request->input('password')
             ])) {
-            return redirect('/oauth2/authorize');
+
+            $params = array_except($request->input(), ['_token', 'username', 'password']);
+            return redirect()->route('oauth2.authorize.get', $params);
         }
 
         return redirect()->back()->withInput()->withErrors('Incorrect username or password!');

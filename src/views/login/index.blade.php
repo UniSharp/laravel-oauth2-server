@@ -18,7 +18,13 @@
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="password" type="password">
                             </div>
-                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                           
+                            <input name="client_id" type="hidden" value="{{$params['client_id']}}">
+                            <input name="redirect_uri" type="hidden" value="{{$params['redirect_uri']}}">
+                            <input name="response_type" type="hidden" value="{{$params['response_type']}}">
+                            <input name="state" type="hidden" value="{{$params['state']}}">
+
+                             <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
                         </fieldset>
                     </form>
                 </div>
