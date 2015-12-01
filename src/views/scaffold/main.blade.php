@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-@include('partial.header')
+@include('oauth2::partial.header')
 <body>
 @yield('main')
-@include('partial.javascript')
+@include('oauth2::partial.javascript')
 </body>
 </html>

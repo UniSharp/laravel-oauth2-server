@@ -1,4 +1,4 @@
-@extends('scaffold.main')
+@extends('oauth2::scaffold.main')
 @section('main')
 <div class="container">
     <div class="row">
@@ -8,8 +8,8 @@
                     <h3 class="panel-title">Please Sign In</h3>
                 </div>
                 <div class="panel-body">
-                    @include('partial.alert')
-                    <form method="POST" action="{{route('login.post')}}">
+                    @include('oauth2::partial.alert')
+                    <form method="POST" action="{{route('oauth2.login.post')}}">
                         {{ csrf_field() }}
                         <fieldset>
                             <div class="form-group">
@@ -18,7 +18,6 @@
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="password" type="password">
                             </div>
-                            <!-- Change this to a button or input when using this as a form -->
                             <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
                         </fieldset>
                     </form>

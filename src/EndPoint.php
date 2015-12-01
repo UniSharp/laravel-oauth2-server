@@ -1,22 +1,22 @@
 <?php
 
-namespace Unisharp\Oauth2\Entity;
+namespace Unisharp\Oauth2;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class EndPoint extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'oauth_clients';
+    protected $table = 'oauth_client_endpoints';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['id', 'secret', 'name'];
+    protected $fillable = ['client_id', 'redirect_uri'];
 }

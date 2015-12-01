@@ -43,7 +43,7 @@ class Oauth2ServiceProvider extends ServiceProvider
      */
     protected function setupConfigs()
     {
-        $this->publishes([__DIR__ . '/config/oauth2-server.php' => config_path('oauth2-server.php', 'config'),], 'oauth2_config');
+        $this->publishes([__DIR__ . '/config/oauth2.php' => config_path('oauth2.php', 'config'),], 'oauth2_config');
     }
 
     /**
@@ -105,7 +105,8 @@ class Oauth2ServiceProvider extends ServiceProvider
          * Register the middleware for the dependency.
          */
         $router = $this->app['router'];
-        $router->middleware('oauth', \LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware::class);
+        $router->middleware('oauth-auth', \Unisharp\Oauth2\Middleware\Authenticate::class);
+        $router->middleware('oauth', \LucaDegasperi\OAuth2Server\Middleware\Authenticate::class);
         $router->middleware('oauth-user', \LucaDegasperi\OAuth2Server\Middleware\OAuthUserOwnerMiddleware::class);
         $router->middleware('oauth-client', \LucaDegasperi\OAuth2Server\Middleware\OAuthClientOwnerMiddleware::class);
         $router->middleware('check-authorization-params', \LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware::class);

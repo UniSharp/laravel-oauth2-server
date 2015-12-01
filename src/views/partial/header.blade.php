@@ -5,17 +5,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>I'm the title</title>
+    <title>Unisharp Oauth2 Server</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('packages/unisharp/oauth2/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
 
     <!-- MetisMenu CSS -->
-    <link href="{{asset('css/metisMenu.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('packages/unisharp/oauth2/css/metisMenu.min.css')}}" rel="stylesheet" type="text/css">
 
     <!-- Custom CSS -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('packages/unisharp/oauth2/css/sb-admin-2.css')}}" rel="stylesheet" type="text/css">
 
     <!-- Custom Fonts -->
-    <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('packages/unisharp/oauth2/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 </head>
