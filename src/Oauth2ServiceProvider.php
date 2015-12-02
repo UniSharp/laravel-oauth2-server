@@ -106,7 +106,7 @@ class Oauth2ServiceProvider extends ServiceProvider
          */
         $router = $this->app['router'];
         $router->middleware('oauth-auth', \Unisharp\Oauth2\Middleware\Authenticate::class);
-        $router->middleware('oauth', \LucaDegasperi\OAuth2Server\Middleware\Authenticate::class);
+        $router->middleware('oauth', \LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware::class);
         $router->middleware('oauth-user', \LucaDegasperi\OAuth2Server\Middleware\OAuthUserOwnerMiddleware::class);
         $router->middleware('oauth-client', \LucaDegasperi\OAuth2Server\Middleware\OAuthClientOwnerMiddleware::class);
         $router->middleware('check-authorization-params', \LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware::class);

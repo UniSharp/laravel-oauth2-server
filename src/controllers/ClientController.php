@@ -19,7 +19,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::paginate();
+
+        return view('oauth2::clients.index', compact('clients'));
     }
 
     /**
@@ -40,18 +42,14 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $client = array();
-        $client["name"] = $request->input('name');
-        $client["id"] = uniqid();
-        $client["secret"] = md5(uniqid());
-        Client::create($client);
+        $input = $request->except('_token');
+        $input['client_id'] = md5(uniqid());
 
-        $end_point = array();
-        $end_point["client_id"] = $client["id"];
-        $end_point["redirect_uri"] = $request->input('url');
-        EndPoint::create($end_point);
+        Client::createByInput($input);
+        EndPoint::createByInput($input);
 
-        return redirect()->back()->withInput()->withError('A client has been created successfully');
+        return redirect()->back()->withInput()
+            ->with('status', 'Created successfully');
     }
 
     /**
@@ -73,7 +71,13 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        //
+        $client = Client::find($id);
+        $end_point = EndPoint::getByClientId($id);
+        if (!$client || !$end_point) {
+            abort(404);
+        }
+
+        return view('oauth2::clients.edit', compact('client', 'end_point'));
     }
 
     /**
@@ -85,7 +89,20 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $client = Client::find($id);
+        $end_point = EndPoint::getByClientId($id);
+        if (!$client || !$end_point) {
+            abort(404);
+        }
+
+        $client->name = $request->input('name');
+        $client->update();
+
+        $end_point->redirect_uri = $request->input('url');
+        $end_point->update();
+        
+        return redirect()->back()->withInput()
+            ->with('status', 'Updated successfully');
     }
 
     /**
@@ -96,6 +113,16 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $client = Client::find($id);
+        $end_point = EndPoint::getByClientId($id);
+        if (!$client || !$end_point) {
+            abort(404);
+        }
+
+       $client->delete();
+       $end_point->delete();
+
+        return redirect()->back()->withInput()
+            ->with('status', 'Deleted successfully');
     }
 }

@@ -3,29 +3,25 @@
 namespace Unisharp\Oauth2\Controllers;
 
 use Illuminate\Http\Request;
-
+use Unisharp\Oauth2\Client;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class Oauth2Controller extends Controller
 {
-    public function client(Request $request)
+    public function test(Request $request)
     {
         $provider = new \League\OAuth2\Client\Provider\GenericProvider([
             'clientId'  => '565d228debe1b',
             'clientSecret' => '5a07583aa278e7cfec84337764aedcc8',
-            'redirectUri' => 'http://localhost:8000/client',
-            'urlAuthorize' => 'http://localhost:8000/oauth2/authorize',
-            'urlAccessToken' => 'http://localhost:8000/access_token',
-            'urlResourceOwnerDetails' => 'http://1localhost:8000/oauth2/resource'
+            'redirectUri' => 'http://localhost:8000/test',
+            'urlAuthorize' => 'http://localhost:9000/oauth2/authorize',
+            'urlAccessToken' => 'http://localhost:9000/oauth2/access_token',
+            'urlResourceOwnerDetails' => 'http://localhost:9000/oauth2/resource'
         ]);
 
         // If we don't have an authorization code then get one
         if (!$request->input('code')) {
-
-            // Fetch the authorization URL from the provider; this returns the
-            // urlAuthorize option and generates and applies any necessary parameters
-            // (e.g. state).
             $authorizationUrl = $provider->getAuthorizationUrl();
 
             // Get the state generated for you and store it to the session.
@@ -37,8 +33,8 @@ class Oauth2Controller extends Controller
         // Check given state against previously stored one to mitigate CSRF attack
         } elseif (empty($request->input('code')) || ($request->input('state') !== session('oauth2state'))) {
 
-            Session::forget('oauth2state');
-            dd('Invalid state');
+            \Session::forget('oauth2state');
+            throw new \Exception('Invalid Exception');
 
         } else {
             try {
@@ -47,32 +43,21 @@ class Oauth2Controller extends Controller
                 $accessToken = $provider->getAccessToken('authorization_code', [
                     'code' => $request->input('code')
                     ]);
-                // We have an access token, which we may use in authenticated
-                // requests against the service provider's API.
-                echo $accessToken->getToken() . "\n";
-                echo $accessToken->getRefreshToken() . "\n";
-                echo $accessToken->getExpires() . "\n";
-                echo ($accessToken->hasExpired() ? 'expired' : 'not expired') . "\n";
 
-                /*// Using the access token, we may look up details about the
-                // resource owner.
+                // Using the access token, we may look up details about the resource owner.
                 $resourceOwner = $provider->getResourceOwner($accessToken);
 
-                var_export($resourceOwner->toArray());
-
-                // The provider provides a way to get an authenticated API request for
-                // the service, using the access token; it returns an object conforming
-                // to Psr\Http\Message\RequestInterface.
+                // The provider provides a way to get an authenticated API
                 $request = $provider->getAuthenticatedRequest(
                     'GET',
-                    'http://brentertainment.com/oauth2/lockdin/resource',
+                    'http://localhost:9000/api',
                     $accessToken
-                    );*/
+                    );
 
             } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
 
                 // Failed to get the access token or user details.
-                exit($e->getMessage());
+                dd($e->getMessage());
 
             }
 
@@ -83,8 +68,13 @@ class Oauth2Controller extends Controller
     {
         $user = \Auth::user();
         $params = $request->input();
+        $client = Client::find($params['client_id']);
+
+        if (Client::isAuthorized($params['client_id'], $user->id)) {
+            return redirect(\Authorizer::issueAuthCode('user', $user->id, $params));
+        }
         
-        return \View::make('oauth2::oauth.authorization-form', ['params' => $params, 'user' => $user]);
+        return view('oauth2::oauth.authorization-form', compact('params', 'user', 'client'));
     }
 
     public function postAuthorize()
@@ -102,86 +92,5 @@ class Oauth2Controller extends Controller
         }
 
         return redirect($redirectUri);
-        /*return \Redirect::to($redirectUri
-                . '&grant_type=authorization_code'
-                . '&client_id=123'
-                . '&client_secret=123'
-                . '&redirect_uri=' . route('oauth2.access_token.get'));*/
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

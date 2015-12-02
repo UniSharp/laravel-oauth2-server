@@ -10,21 +10,31 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/client', ['as' => 'oauth2.client', 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@client']);
-
-
+Route::get('/test', ['as' => 'oauth2.test', 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@test']);
 
 Route::group(['prefix' => 'oauth2'], function () {
-	Route::get('/login', ['as' => 'oauth2.login.get', 'uses' => 'Unisharp\Oauth2\Controllers\Auth\AuthController@index']);
+	Route::get('/login', ['as' => 'oauth2.login.get', 'middleware' => ['check-authorization-params'], 'uses' => 'Unisharp\Oauth2\Controllers\Auth\AuthController@index']);
 	Route::post('/login', ['as' => 'oauth2.login.post', 'uses' => 'Unisharp\Oauth2\Controllers\Auth\AuthController@authenticate']);
 	
-	Route::get('/authorize', ['as' => 'oauth2.authorize.get', 'middleware' => ['oauth-auth'], 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@getAuthorize']);
+	Route::get('/authorize', ['as' => 'oauth2.authorize.get', 'middleware' => ['oauth-auth', 'check-authorization-params'], 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@getAuthorize']);
 	Route::post('/authorize', ['as' => 'oauth2.authorize.post', 'middleware' => ['oauth-auth', 'check-authorization-params'], 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@postAuthorize']);
-	Route::post('/access_token', ['as' => 'oauth2.access_token.get', function() {
-		return '{"access_token":"GpQgXCwmgb5byJMFeAoKIL6IMqA4ZpPDCESFtXRN","token_type":"Bearer","expires_in":3600,"refresh_token":"tH0MDjlO3K3HjveI5hvSBp2FZBYDog58mxLeoJEl"}';
-		//return Response::json(Authorizer::issueAccessToken());
+	Route::any('/access_token', ['as' => 'oauth2.access_token.get', function() {
+		return Response::json(Authorizer::issueAccessToken());
+	}]);
+	Route::any('/resource', ['as' => 'oauth2.resource.get', function() {
+		return Response::json(['id' => 1, 'name' => 'test']);
 	}]);
 
-	Route::get('/client/create', ['as' => 'oauth2.client.create', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@create']);
-	Route::post('/client/store', ['as' => 'oauth2.client.store', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@store']);
+	Route::group(['prefix' => 'client'], function () {
+		Route::get('/', ['as' => 'oauth2.client.index', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@index']);
+		Route::get('/edit/{id}', ['as' => 'oauth2.client.edit', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@edit']);
+		Route::post('/update/{id}', ['as' => 'oauth2.client.update', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@update']);
+		Route::get('/create', ['as' => 'oauth2.client.create', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@create']);
+		Route::post('/store', ['as' => 'oauth2.client.store', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@store']);
+		Route::get('/delete/{id}', ['as' => 'oauth2.client.delete', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@destroy']);
+	});
 });
+
+Route::get('/api', ['as' => 'oauth2.api', 'middleware' => ['oauth'], function() {
+	return Response::json(['status' => 'success']);
+}]);

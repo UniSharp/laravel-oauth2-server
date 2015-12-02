@@ -12,17 +12,15 @@
                     <form method="POST" action="{{route('oauth2.authorize.post', $params)}}" class="form-horizontal" style="text-align:center">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <dl class="dl-horizontal">
-                            <dt>Client Name</dt>
-                            <dd>{{$user->name}}</dd>
-                        </dl>
+                        Welcome, {{$user->name}}<br>
+                        <strong>{{$client->name}}</strong> would like to access your account data.
                     </div>
                     <input name="client_id" type="hidden" value="{{$params['client_id']}}">
                     <input name="redirect_uri" type="hidden" value="{{$params['redirect_uri']}}">
                     <input name="response_type" type="hidden" value="{{$params['response_type']}}">
                     <input name="state" type="hidden" value="{{$params['state']}}">
                     <input name="approve" type="submit" value="Approve" class="btn btn-success">
-                    <input name="deny" type="submit" value="Deny" class="btn bg-danger">
+                    <input name="deny" type="submit" value="Deny" class="btn btn-danger">
                     </form>
                 </div>
             </div>

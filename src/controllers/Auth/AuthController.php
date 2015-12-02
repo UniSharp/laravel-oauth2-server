@@ -5,6 +5,7 @@ namespace Unisharp\Oauth2\Controllers\Auth;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
+use Unisharp\Oauth2\Client;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -31,17 +32,12 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('guest', ['except' => 'getLogout']);
+        //
     }
 
     protected $rules = array(
         'username' => 'required',
         'password' => 'required'
-        );
-
-    protected $messages = array(
-        'username.required' => '帳號為必填項目',
-        'password.required' => '密碼為必填項目'
         );
 
     protected $redirectPath = '/';
@@ -54,16 +50,18 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-        $validator = Validator::make($data, $this->rules, $this->messages);
+        $validator = Validator::make($data, $this->rules);
         if ($validator->fails()) {
             return $validator;
         }
+
         return true;
     }
 
     public function index(Request $request)
     {
         $params = $request->input();
+        $validation = Client::validateParams($params);
 
         return view('oauth2::login.index', compact('params'));
     }

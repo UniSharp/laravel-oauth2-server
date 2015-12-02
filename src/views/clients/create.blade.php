@@ -2,7 +2,7 @@
 @section('main')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-3">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Create a new client</h3>
@@ -24,7 +24,8 @@
                             </div>
                         </div>
                         <div style="text-align:center">
-                        <input class="btn btn-default btn-primary" type="submit" value="Create">
+                        <input class="btn btn-default btn-success" type="submit" value="Create">
+                        <a href="{{route('oauth2.client.index')}}" class="btn btn-default btn-info">Back</a>
                         </div>
                     </form>
                 </div>
