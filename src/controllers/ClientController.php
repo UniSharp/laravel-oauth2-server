@@ -2,12 +2,10 @@
 
 namespace Unisharp\Oauth2\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Unisharp\Oauth2\Client;
 use Unisharp\Oauth2\EndPoint;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class ClientController extends Controller
 {
@@ -44,6 +42,8 @@ class ClientController extends Controller
     {
         $input = $request->except('_token');
         $input['client_id'] = md5(uniqid());
+
+        $this->validator($request);
 
         Client::createByInput($input);
         EndPoint::createByInput($input);
@@ -95,12 +95,14 @@ class ClientController extends Controller
             abort(404);
         }
 
+        $this->validator($request);
+
         $client->name = $request->input('name');
         $client->update();
 
         $end_point->redirect_uri = $request->input('url');
         $end_point->update();
-        
+
         return redirect()->back()->withInput()
             ->with('status', 'Updated successfully');
     }
@@ -119,10 +121,18 @@ class ClientController extends Controller
             abort(404);
         }
 
-       $client->delete();
-       $end_point->delete();
+        $client->delete();
+        $end_point->delete();
 
         return redirect()->back()->withInput()
             ->with('status', 'Deleted successfully');
+    }
+
+    public function validator(Request $request)
+    {
+        return $this->validate($request, [
+            'name' => 'required',
+            'url' => 'required',
+        ]);
     }
 }

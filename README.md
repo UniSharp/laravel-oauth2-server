@@ -1,1 +1,27 @@
-# laravel-oauth2-server
+Laravel-OAuth2-Server
+===================
+
+### What is this package for? ###
+
+* This package is for laravel 5.0/5.1, which may help you build an oauth2 server instantly.
+* It's based on https://github.com/lucadegasperi/oauth2-server-laravel
+
+## Setup
+
+1. In `/config/app.php`, add the following to `providers`:
+    ```
+    Unisharp\Oauth2\Oauth2ServiceProvider::class,
+    ```
+2. Run `php artisan vendor:publish --force`.
+   * Because this package will overwrite the config of lucadegasperi/oauth2-server-laravel (sharring the same config file)
+3. In `/config/oath2.php`, here are the default settings
+   * `auth_fields`: user authentication fields binding to your users table
+   * `grant_types`: here, we implement the most common way in oauth2 (authorization_code + refresh token)
+
+## Usage
+
+* Client CRUD: you can manage your oauth clients info here - `/oauth2/client`
+* API protection: just put the middleware `oauth` in the route you'd like to protect
+
+> This package hasn't implemented scopes, you need to define your own scopes by yourself.
+

@@ -15,9 +15,9 @@ return [
     |--------------------------------------------------------------------------
     | Unisharp Oauth Server Configs
     |--------------------------------------------------------------------------
-    */
+     */
     'auth_fields' => ['username' => 'name', 'password' => 'password'],
-
+    'user_model' => '\App\User',
 
     /*
     |--------------------------------------------------------------------------
@@ -33,19 +33,19 @@ return [
     | Please see this link to find available grant types
     | http://git.io/vJLAv
     |
-    */
+     */
 
     'grant_types' => [
         'authorization_code' => [
-        'class' => '\League\OAuth2\Server\Grant\AuthCodeGrant',
-        'access_token_ttl' => 3600,
-        'auth_token_ttl'   => 3600
+            'class' => '\League\OAuth2\Server\Grant\AuthCodeGrant',
+            'access_token_ttl' => 3600,
+            'auth_token_ttl' => 3600,
         ],
         'refresh_token' => [
-        'class' => '\League\OAuth2\Server\Grant\RefreshTokenGrant',
-        'access_token_ttl' => 3600,
-        'refresh_token_ttl' => 36000
-        ]
+            'class' => '\League\OAuth2\Server\Grant\RefreshTokenGrant',
+            'access_token_ttl' => 3600,
+            'refresh_token_ttl' => 36000,
+        ],
     ],
 
     /*
@@ -58,7 +58,7 @@ return [
     |
     | Default value is League\OAuth2\Server\TokenType\Bearer
     |
-    */
+     */
 
     'token_type' => 'League\OAuth2\Server\TokenType\Bearer',
 
@@ -69,7 +69,7 @@ return [
     |
     | Whether or not the state parameter is required in the query string.
     |
-    */
+     */
 
     'state_param' => false,
 
@@ -80,7 +80,7 @@ return [
     |
     | Whether or not the scope parameter is required in the query string.
     |
-    */
+     */
 
     'scope_param' => false,
 
@@ -91,7 +91,7 @@ return [
     |
     | Which character to use to split the scope parameter in the query string.
     |
-    */
+     */
 
     'scope_delimiter' => ',',
 
@@ -102,7 +102,7 @@ return [
     |
     | The default scope to use if not present in the query string.
     |
-    */
+     */
 
     'default_scope' => null,
 
@@ -114,7 +114,7 @@ return [
     | For how long the issued access token is valid (in seconds) this can be
     | also set on a per grant-type basis.
     |
-    */
+     */
 
     'access_token_ttl' => 3600,
 
@@ -126,7 +126,7 @@ return [
     | Whether or not to limit clients to specific grant types. This is useful
     | to allow only trusted clients to access your API differently.
     |
-    */
+     */
 
     'limit_clients_to_grants' => false,
 
@@ -138,7 +138,7 @@ return [
     | Whether or not to limit clients to specific scopes. This is useful to
     | only allow specific clients to use some scopes.
     |
-    */
+     */
 
     'limit_clients_to_scopes' => false,
 
@@ -150,7 +150,7 @@ return [
     | Whether or not to limit scopes to specific grants. This is useful to
     | allow certain scopes to be used only with certain grant types.
     |
-    */
+     */
 
     'limit_scopes_to_grants' => false,
 
@@ -162,7 +162,7 @@ return [
     | This will tell the resource server where to check for the access_token.
     | By default it checks both the query string and the http headers.
     |
-    */
+     */
 
     'http_headers_only' => false,
 

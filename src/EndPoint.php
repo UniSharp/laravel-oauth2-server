@@ -2,7 +2,6 @@
 
 namespace Unisharp\Oauth2;
 
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class EndPoint extends Model
@@ -21,7 +20,7 @@ class EndPoint extends Model
      */
     protected $fillable = ['client_id', 'redirect_uri'];
 
-    public static function createByInput(Array $input)
+    public static function createByInput(array $input)
     {
         $end_point = array();
         $end_point["client_id"] = $input['client_id'];

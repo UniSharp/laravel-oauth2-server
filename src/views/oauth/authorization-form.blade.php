@@ -13,7 +13,7 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                         Welcome, {{$user->name}}<br>
-                        <strong>{{$client->name}}</strong> would like to access your account data.
+                        <strong>{{$client->name}}</strong> would like to access your personal information.
                     </div>
                     <input name="client_id" type="hidden" value="{{$params['client_id']}}">
                     <input name="redirect_uri" type="hidden" value="{{$params['redirect_uri']}}">
