@@ -17,7 +17,7 @@ Route::group(['prefix' => 'oauth2'], function () {
 
     Route::get('/authorize', ['as' => 'oauth2.authorize.get', 'middleware' => ['oauth-auth', 'check-authorization-params'], 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@getAuthorize']);
     Route::post('/authorize', ['as' => 'oauth2.authorize.post', 'middleware' => ['oauth-auth', 'check-authorization-params'], 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@postAuthorize']);
-    Route::any('/access_token', ['as' => 'oauth2.access_token.get', function () {
+    Route::any('/token', ['as' => 'oauth2.access_token.get', function () {
         return Response::json(Authorizer::issueAccessToken());
     }]);
     Route::any('/resource', ['as' => 'oauth2.resource.get', 'middleware' => ['oauth'], 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@getResourceOwner']);
