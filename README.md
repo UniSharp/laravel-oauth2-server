@@ -12,10 +12,12 @@ Laravel-OAuth2-Server
     ```
     Unisharp\Oauth2\Oauth2ServiceProvider::class,
     ```
-2. Run `php artisan vendor:publish --force`.
+2. Run `php artisan vendor:publish --provider="Unisharp\Oauth2\Oauth2ServiceProvider" --force`.
    * Because this package will overwrite the config of lucadegasperi/oauth2-server-laravel (sharring the same config file)
-3. In `/config/oath2.php`, here are the default settings
+3. Run `php artisan migrate`
+4. In `/config/oath2.php`, here are the default settings
    * `auth_fields`: user authentication fields binding to your users table
+   * `user_model`: user authentication entity
    * `grant_types`: here, we implement the most common way in oauth2 (authorization_code + refresh token)
 
 ## Usage
