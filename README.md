@@ -18,7 +18,9 @@ Laravel-OAuth2-Server
 3. Run `php artisan migrate`
 4. In `/config/oath2.php`, here are the default settings
    * `auth_fields`: user authentication fields binding to your users table
+   * `user_model`: user model that you are going to combine with oauth2 login
    * `grant_types`: here, we implement the most common way in oauth2 (authorization_code + refresh token)
+   * `client_middleware`: middleware used to protect your clients CRUD interface
 
 ## Usage
 
