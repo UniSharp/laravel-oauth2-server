@@ -22,7 +22,7 @@ Route::group(['prefix' => 'oauth2'], function () {
     }]);
     Route::any('/resource', ['as' => 'oauth2.resource.get', 'middleware' => ['oauth'], 'uses' => 'Unisharp\Oauth2\Controllers\Oauth2Controller@getResourceOwner']);
 
-    Route::group(['prefix' => 'client', 'middleware' => config('client_middleware')], function () {
+    Route::group(['prefix' => 'client', 'middleware' => config('oauth2.client_middleware')], function () {
         Route::get('/', ['as' => 'oauth2.client.index', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@index']);
         Route::get('/edit/{id}', ['as' => 'oauth2.client.edit', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@edit']);
         Route::post('/update/{id}', ['as' => 'oauth2.client.update', 'uses' => 'Unisharp\Oauth2\Controllers\ClientController@update']);
