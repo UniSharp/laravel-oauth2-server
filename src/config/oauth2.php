@@ -19,6 +19,7 @@ return [
     'auth_fields' => ['username' => 'name', 'password' => 'password'],
     'user_model' => '\App\User',
     'client_middleware' => 'auth',
+    'skip_authorized' => false,
 
     /*
     |--------------------------------------------------------------------------

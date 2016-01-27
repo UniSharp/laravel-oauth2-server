@@ -16,10 +16,9 @@ class Oauth2Controller extends Controller
         $params = $request->input();
         $client = Client::find($params['client_id']);
 
-        // optional
-        /*if (Client::isAuthorized($params['client_id'], $user->id)) {
-        return redirect(\Authorizer::issueAuthCode('user', $user->id, $params));
-        }*/
+        if (Client::isAuthorized($params['client_id'], $user->id) && config('oauth2.skip_authorized') === true) {
+            return redirect(\Authorizer::issueAuthCode('user', $user->id, $params));
+        }
 
         return view('oauth2::oauth.authorization-form', compact('params', 'user', 'client'));
     }
