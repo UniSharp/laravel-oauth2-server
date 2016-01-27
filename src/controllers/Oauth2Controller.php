@@ -4,6 +4,7 @@ namespace Unisharp\Oauth2\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use League\OAuth2\Server\TokenType\Bearer;
 use Unisharp\Oauth2\Client;
 
 class Oauth2Controller extends Controller
@@ -42,7 +43,14 @@ class Oauth2Controller extends Controller
 
     public function getResourceOwner(Request $request)
     {
-        $user = Client::getUserByAccessToken($request->input('access_token'));
+        $Bearer = new Bearer();
+        if ($request->input('access_token')) {
+            $access_token = $request->input('access_token');
+        } else {
+            $access_token = $Bearer->determineAccessTokenInHeader($request);
+        }
+
+        $user = Client::getUserByAccessToken($access_token);
 
         return response()->json($user);
     }
